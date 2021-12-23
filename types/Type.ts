@@ -1,25 +1,26 @@
 import { Pixel } from '../pixel';
 
-export namespace Types {
-  export abstract class Type {
-    public readonly values: Pixel[];
+export abstract class Type<T = Pixel[]> {
+  public readonly value: T;
+  public length?: number;
 
-    protected constructor(values: Pixel[]) {
-      this.values = values;
-    }
+  protected constructor(values: T) {
+    this.value = values;
   }
 
-  export class FixedType extends Type {
-    constructor(values: Pixel[], public length: number) {
-      super(values);
+  abstract verify(): void;
+}
 
-      this.length = length;
-    }
+export abstract class FixedType<T = Pixel[]> extends Type<T> {
+  protected constructor(value: T, public length: number) {
+    super(value);
+
+    this.length = length;
   }
+}
 
-  export class DynamicType extends Type {
-    constructor(values: Pixel[]) {
-      super(values);
-    }
+export abstract class DynamicType<T = Pixel[]> extends Type<T> {
+  protected constructor(value: T) {
+    super(value);
   }
 }
