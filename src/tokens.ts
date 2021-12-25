@@ -5,17 +5,17 @@ import { Pixel } from './pixel';
  */
 type TypeToken<V extends string> = {
   values: Record<V, Pixel>;
-  id: Pixel
-}
+  id: Pixel;
+};
 
 /**
  * The structure of the {@link tokens} object.
  */
 export type Tokens = {
   types: {
-    boolean: TypeToken<'BOOL_TRUE' | 'BOOL_FALSE'>
-  }
-}
+    boolean: TypeToken<'BOOL_TRUE' | 'BOOL_FALSE'>;
+  };
+};
 
 /**
  * Represents the pixel colors associated to every token in the language.

@@ -10,12 +10,13 @@ export class PixelUtils {
   /**
    * Returns whether a pixel is included in a list of pixels.
    */
-  public static contains(pixel: Pixel, matches: Pixel[] | Record<string, Pixel>): boolean {
-    const values = Array.isArray(matches)
-      ? matches
-      : Object.values(matches);
+  public static contains(
+    pixel: Pixel,
+    matches: Pixel[] | Record<string, Pixel>,
+  ): boolean {
+    const values = Array.isArray(matches) ? matches : Object.values(matches);
 
-    return values.some(match => this.equals(pixel, match));
+    return values.some((match) => this.equals(pixel, match));
   }
 
   /**
