@@ -1,6 +1,4 @@
-import { Pixel } from '../pixel';
-
-export abstract class Type<T = Pixel[]> {
+export abstract class Type<T> {
   public readonly value: T;
   public length?: number;
 
@@ -8,10 +6,10 @@ export abstract class Type<T = Pixel[]> {
     this.value = values;
   }
 
-  abstract verify(): void;
+  abstract verify(): boolean;
 }
 
-export abstract class FixedType<T = Pixel[]> extends Type<T> {
+export abstract class FixedType<T> extends Type<T> {
   protected constructor(value: T, public length: number) {
     super(value);
 
@@ -19,7 +17,7 @@ export abstract class FixedType<T = Pixel[]> extends Type<T> {
   }
 }
 
-export abstract class DynamicType<T = Pixel[]> extends Type<T> {
+export abstract class DynamicType<T> extends Type<T> {
   protected constructor(value: T) {
     super(value);
   }
