@@ -1,6 +1,9 @@
 # IDE configuration
 .idea
 
+# Output files
+lib
+
 # Logs
 logs
 *.log
