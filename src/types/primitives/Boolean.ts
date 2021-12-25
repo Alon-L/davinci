@@ -1,10 +1,12 @@
-import { FixedType } from '..';
+import { FixedType } from '../Type';
 import { Pixel, PixelUtils } from '../../pixel';
 import { tokens } from '../../tokens';
 
 export class BooleanType extends FixedType<Pixel> {
+  public static size: number = 1;
+
   constructor(value: Pixel) {
-    super(value, 1);
+    super(value, BooleanType.size);
   }
 
   public verify(): boolean {
@@ -12,6 +14,6 @@ export class BooleanType extends FixedType<Pixel> {
       throw new TypeError('Pixel value does not represent a boolean');
     }
 
-    return true;
+    return super.verify();
   }
 }
