@@ -4,6 +4,8 @@ export abstract class Type<T> {
 
   protected constructor(values: T) {
     this.value = values;
+
+    this.verify();
   }
 
   abstract verify(): boolean;
