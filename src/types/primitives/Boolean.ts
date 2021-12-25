@@ -1,5 +1,5 @@
+import { FixedType } from '..';
 import { Pixel, PixelUtils } from '../../pixel';
-import { FixedType } from '../index';
 import { tokens } from '../../tokens';
 
 export class BooleanType extends FixedType<Pixel> {
@@ -8,8 +8,8 @@ export class BooleanType extends FixedType<Pixel> {
   }
 
   public verify(): void {
-    if (PixelUtils.any(this.value, tokens.types.boolean.values)) {
-
+    if (!PixelUtils.any(this.value, tokens.types.boolean.values)) {
+      throw new TypeError('Pixel value does not represent a boolean');
     }
   }
 }
