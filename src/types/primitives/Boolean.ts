@@ -3,7 +3,7 @@ import { Pixel, PixelUtils } from '../../pixel';
 import { tokens } from '../../tokens';
 
 export class BooleanType extends FixedType<Pixel> {
-  public static size: number = 1;
+  public static size = 1;
 
   constructor(value: Pixel) {
     super(value, BooleanType.size);
