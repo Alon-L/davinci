@@ -8,6 +8,8 @@ export class BooleanType extends FixedType<Pixel> {
   }
 
   public verify(): void {
+    if (PixelUtils.any(this.value, tokens.types.boolean.values)) {
 
+    }
   }
 }
