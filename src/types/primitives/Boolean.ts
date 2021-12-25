@@ -7,9 +7,11 @@ export class BooleanType extends FixedType<Pixel> {
     super(value, 1);
   }
 
-  public verify(): void {
-    if (!PixelUtils.any(this.value, tokens.types.boolean.values)) {
+  public verify(): boolean {
+    if (!PixelUtils.contains(this.value, tokens.types.boolean.values)) {
       throw new TypeError('Pixel value does not represent a boolean');
     }
+
+    return true;
   }
 }
