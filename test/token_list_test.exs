@@ -8,21 +8,39 @@ defmodule TokenListTest do
     {:ok, pid: pid}
   end
 
-  @token %Davinci.Token{type: :eof, start_idx: 0, end_idx: 0}
+  @token1 %Davinci.Token{type: :eof, start_idx: 0, end_idx: 0}
+  @token2 %Davinci.Token{type: :start, start_idx: 0, end_idx: 0}
 
-  test "insert and pop", %{pid: pid} = _context do
-    assert TokenList.push(pid, @token) == :ok
-    assert TokenList.pop_next(pid) == @token
+  test "insert and consume", %{pid: pid} = _context do
+    assert TokenList.insert(pid, @token1) == :ok
+    assert TokenList.consume(pid) == @token1
   end
 
   test "insert and peek", %{pid: pid} = _context do
-    assert TokenList.push(pid, @token) == :ok
-    assert TokenList.peek_next(pid) == @token
+    assert TokenList.insert(pid, @token1) == :ok
+    assert TokenList.peek(pid) == @token1
   end
 
-  test "peek does not pop", %{pid: pid} = _context do
-    assert TokenList.push(pid, @token) == :ok
-    assert TokenList.peek_next(pid) == @token
-    assert TokenList.pop_next(pid) == @token
+  test "peek does not consume", %{pid: pid} = _context do
+    assert TokenList.insert(pid, @token1) == :ok
+    assert TokenList.peek(pid) == @token1
+    assert TokenList.consume(pid) == @token1
+  end
+
+  test "multiple insert", %{pid: pid} = _context do
+    assert TokenList.insert(pid, @token1) == :ok
+    assert TokenList.insert(pid, @token2) == :ok
+    assert TokenList.peek(pid) == @token1
+    assert TokenList.consume(pid) == @token1
+    assert TokenList.consume(pid) == @token2
+  end
+
+  test "restore consumed tokens", %{pid: pid} = _context do
+    assert TokenList.insert(pid, @token1) == :ok
+    assert TokenList.insert(pid, @token2) == :ok
+    assert TokenList.consume(pid) == @token1
+    assert TokenList.restore(pid) == :ok
+    assert TokenList.consume(pid) == @token1
+    assert TokenList.consume(pid) == @token2
   end
 end
