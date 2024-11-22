@@ -1,52 +1,36 @@
 defmodule Davinci.TokenList do
-  use GenServer
+  alias Davinci.TokenList
+  alias Davinci.Token
 
-  def start_link() do
-    GenServer.start_link(__MODULE__, [])
+  defstruct [all_tokens: [], tokens: []]
+
+  @spec insert(%TokenList{}, %Token{}) :: {:ok, %TokenList{}}
+  def insert(%TokenList{all_tokens: all_tokens, tokens: tokens} = token_list, %Token{} = token) do
+    {:ok, %TokenList{token_list | all_tokens: all_tokens ++ [token], tokens: tokens ++ [token]}}
   end
 
-  def start_link(list) when is_binary(list) do
-    GenServer.start_link(__MODULE__, list)
+  @spec peek(%TokenList{tokens: []}) :: {:err, :empty}
+  def peek(%TokenList{tokens: []}) do
+    {:err, :empty}
   end
 
-  def insert(pid, %Davinci.Token{} = token) do
-    GenServer.cast(pid, {:insert, token})
+  @spec peek(%TokenList{}) :: {:ok, %Token{}}
+  def peek(%TokenList{tokens: [token | _]}) do
+    {:ok, token}
   end
 
-  def peek(pid) do
-    GenServer.call(pid, :peek)
+  @spec consume(%TokenList{tokens: []}) :: {:err, :empty}
+  def consume(%TokenList{tokens: []}) do
+    {:err, :empty}
   end
 
-  def consume(pid) do
-    GenServer.call(pid, :consume)
+  @spec consume(%TokenList{}) :: {:ok, %TokenList{}, %Token{}}
+  def consume(%TokenList{tokens: [token | rest]} = token_list) do
+    {:ok, %TokenList{token_list | tokens: rest}, token}
   end
 
-  def restore(pid) do
-    GenServer.cast(pid, :restore)
-  end
-
-  @impl true
-  def init(init_list) do
-    {:ok, {init_list, init_list}}
-  end
-
-  @impl true
-  def handle_cast({:insert, %Davinci.Token{} = token}, {all_tokens, tokens}) do
-    {:noreply, {all_tokens ++ [token], tokens ++ [token]}}
-  end
-  
-  @impl true
-  def handle_cast(:restore, {all_tokens, _}) do
-    {:noreply, {all_tokens, all_tokens}}
-  end
-
-  @impl true
-  def handle_call(:peek, _from, {all_tokens, [next | rest]}) do
-    {:reply, next, {all_tokens, [next | rest]}}
-  end
-
-  @impl true
-  def handle_call(:consume, _from, {all_tokens, [next | rest]}) do
-    {:reply, next, {all_tokens, rest}}
+  @spec restore(%TokenList{}) :: {:ok, %TokenList{}}
+  def restore(%TokenList{all_tokens: all_tokens} = token_list) do
+    {:ok, %TokenList{token_list | tokens: all_tokens}}
   end
 end
